@@ -50,11 +50,6 @@ class KafkaConsumer:
         pass
 
     def _handle_message(self, msg):
-        # Proper message
-        sys.stderr.write('%% %s [%d] at offset %d with key %s:\n' %
-                        (msg.topic(), msg.partition(), msg.offset(),
-                        str(msg.key())))
-        print(msg.value())
         # Store the offset associated with msg to a local cache.
         # Stored offsets are committed to Kafka by a background thread every 'auto.commit.interval.ms'.
         # Explicitly storing offsets after processing gives at-least once semantics.
@@ -87,8 +82,6 @@ class KafkaProducerAvro(KafkaProducer):
     '''
         - topic: name of kafka topic
     '''
-
-
     def __init__(self, topic: str, bootstrap_server_host: str, sr_url: str):
         self._topic = topic
         self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
@@ -108,7 +101,6 @@ class KafkaProducerAvro(KafkaProducer):
         self._p = SerializingProducer(producer_conf)
 
     def on_delivered(self, err, msg):
-        print('hello')
         return super().on_delivered(err, msg)
 
     def publish(self, key: str, message):
@@ -117,8 +109,11 @@ class KafkaProducerAvro(KafkaProducer):
         self._p.flush()
 
 class KafkaConsumerAvro(KafkaConsumer):
+    '''
+    This class only consumes one topic
+    '''
     def __init__(self, topic: str, group_id: int, bootstrap_server_host: str, sr_url: str):
-        super().__init__(topic, group_id, bootstrap_server_host)
+        super().__init__([topic], group_id, bootstrap_server_host)
         self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
         self._msg_schema = self._sr_client.get_schema_from_schema_registry()
         self._avro_deserializer = AvroDeserializer(schema_registry_client=self._sr_client._sr_client,
