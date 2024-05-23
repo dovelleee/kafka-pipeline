@@ -1,7 +1,6 @@
 {
     "type": "record",
     "name": "test_topic_value",
-    "namespace": "test_namespace",
     "fields": [
         {
             "name": "k1",

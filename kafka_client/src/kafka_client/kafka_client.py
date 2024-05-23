@@ -93,7 +93,7 @@ class KafkaProducerAvro(KafkaProducer):
         self._topic = topic
         self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
         self._msg_schema = self._sr_client.get_schema_from_schema_registry()
-        self._avro_serializer = AvroSerializer(schema_registry_client=self._sr_client,
+        self._avro_serializer = AvroSerializer(schema_registry_client=self._sr_client._sr_client,
                                                schema_str=self._msg_schema.schema.schema_str,
                                                conf={'auto.register.schemas': False})
         self._bs_host = bootstrap_server_host
@@ -117,10 +117,11 @@ class KafkaProducerAvro(KafkaProducer):
         self._p.flush()
 
 class KafkaConsumerAvro(KafkaConsumer):
-    def __init__(self, topic: str, group_id: int, sr_subject: str, bootstrap_server_host: str, sr_url: str):
+    def __init__(self, topic: str, group_id: int, bootstrap_server_host: str, sr_url: str):
         super().__init__(topic, group_id, bootstrap_server_host)
-        self._sr_client, self._msg_schema = get_schema_from_schema_registry(sr_url, sr_subject)
-        self._avro_deserializer = AvroDeserializer(schema_registry_client=self._sr_client,
+        self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
+        self._msg_schema = self._sr_client.get_schema_from_schema_registry()
+        self._avro_deserializer = AvroDeserializer(schema_registry_client=self._sr_client._sr_client,
                                                schema_str=self._msg_schema.schema.schema_str)
         self._sr_url = sr_url
 

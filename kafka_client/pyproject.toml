@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=64.0", "confluent_kafka", "requests"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -9,15 +9,10 @@ authors = [
   { name="Rouhollah Abolhasani", email="roohi.abol@gmail.com" },
 ]
 description = "Kafka client for Python3. It includes clients for managing Kafka clusters, Kafka producers, and Kafka consumers. This package offers a high-level interface for Kafka users."
-readme = "README.md"
 requires-python = ">=3.6"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
-]
-dependencies = [
-    'confluent_kafka',
-    'requests'
 ]
 
 [project.urls]
