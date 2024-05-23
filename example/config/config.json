@@ -1,5 +1,0 @@
-{
-    "kafka.bootstrap-server.host": "localhost",
-    "kafka.schema-registry.url": "http://localhost:8081",
-    "kafka.rest-proxy.url": "http://dev-server.local:8082"
-}
