@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kafka_client"
+version = "0.1"
+authors = [
+  { name="Rouhollah Abolhasani", email="roohi.abol@gmail.com" },
+]
+description = "Kafka client for Python3. It includes clients for managing Kafka clusters, Kafka producers, and Kafka consumers. This package offers a high-level interface for Kafka users."
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    'confluent_kafka',
+    'requests'
+]
+
+[project.urls]
+Homepage = "http://192.168.100.5:82/dovelle/etl-kafka.git/kafka_client"
