@@ -1,3 +1,5 @@
+# in case of any issues connectivity/network related issues, this doc might help: https://www.confluent.io/blog/kafka-listeners-explained/
+
 ---
 version: '2'
 services:
