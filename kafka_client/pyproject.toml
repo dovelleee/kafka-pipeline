@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64.0", "confluent_kafka", "requests"]
+requires = ["setuptools==65", "confluent_kafka"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -13,6 +13,13 @@ requires-python = ">=3.6"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
+]
+
+dependencies = [
+  "requests",
+  "docker",
+  "confluent-kafka==2.4",
+  "fastavro==1.9"
 ]
 
 [project.urls]
