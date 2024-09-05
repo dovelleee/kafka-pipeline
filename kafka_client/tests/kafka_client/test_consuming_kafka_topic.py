@@ -10,9 +10,10 @@ config = {
 
 class TestKafkaConsumer(KafkaConsumerAvro):
     def handle_message(self, msg):
-        print('%% %s [%d] at offset %d with key %s:\n' %
+        print('%% %s [%d] at offset %d with key %s:' %
                 (msg.topic(), msg.partition(), msg.offset(),
                 str(msg.key())), flush=True)
+        print(msg.value(), flush=True)
 
 consumer = TestKafkaConsumer(topic=config['topic-name'], group_id=1,
                              bootstrap_server_host=config['kafka-host'],

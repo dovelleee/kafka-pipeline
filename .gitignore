@@ -1,3 +1,4 @@
 __pycache__/
 dist/
 *.egg-info/
+kafka_client/tests/docker_pipeline/kafka_client/

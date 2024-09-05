@@ -1,0 +1,19 @@
+{
+    "type": "record",
+    "name": "test_stage_two_topic_value",
+    "fields": [
+        {
+            "name": "postid",
+            "type": [
+                "string"
+            ]
+        },
+        {
+            "name": "ppm",
+            "type": [
+                "float"
+            ],
+            "default": 0.99
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  stage1:
+    build: 
+      context: .
+      dockerfile: ./stage_one/Dockerfile
+      
+  stage2:
+    build: 
+      context: .
+      dockerfile: ./stage_two/Dockerfile
+    depends_on:
+      - stage1
+
+  stage3:
+    build: 
+      context: .
+      dockerfile: ./stage_three/Dockerfile
+    depends_on:
+      - stage2
