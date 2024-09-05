@@ -9,8 +9,11 @@ This doc was helpful: https://medium.com/@mrugankray/create-avro-producer-for-ka
 '''
 
 class KafkaProducer:
-    def __init__(self, topic: str, bootstrap_server_host: str):
-        self._bs_host = bootstrap_server_host
+    '''
+        :param str bootstrap_server: A list of host/port pairs to use for establishing the initial connection to the Kafka cluster. This list should be in the form `host1:port1,host2:port2,...`
+    '''
+    def __init__(self, topic: str, bootstrap_server: str):
+        self._bs_host = bootstrap_server
         self._topic = topic
         producer_conf = { 'bootstrap.servers': self._bs_host }
         self._p = Producer(**producer_conf)
@@ -25,9 +28,9 @@ class KafkaProducer:
 
 
 class KafkaConsumer:
-    def __init__(self, topic: str, group_id: int, bootstrap_server_host: str):
+    def __init__(self, topic: str, group_id: int, bootstrap_server: str):
         self._topic = topic
-        self._bs_host = bootstrap_server_host
+        self._bs_host = bootstrap_server
         consumer_conf = {'bootstrap.servers': self._bs_host,
                          'group.id': group_id,
                          'session.timeout.ms': 6000,
@@ -82,14 +85,14 @@ class KafkaProducerAvro(KafkaProducer):
     '''
         - topic: name of kafka topic
     '''
-    def __init__(self, topic: str, bootstrap_server_host: str, sr_url: str):
+    def __init__(self, topic: str, bootstrap_server: str, sr_url: str):
         self._topic = topic
         self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
         self._msg_schema = self._sr_client.get_schema_from_schema_registry()
         self._avro_serializer = AvroSerializer(schema_registry_client=self._sr_client._sr_client,
                                                schema_str=self._msg_schema.schema.schema_str,
                                                conf={'auto.register.schemas': False})
-        self._bs_host = bootstrap_server_host
+        self._bs_host = bootstrap_server
         self._sr_url = sr_url
         producer_conf = {
             'bootstrap.servers': self._bs_host,
@@ -112,8 +115,8 @@ class KafkaConsumerAvro(KafkaConsumer):
     '''
     This class only consumes one topic
     '''
-    def __init__(self, topic: str, group_id: int, bootstrap_server_host: str, sr_url: str):
-        super().__init__([topic], group_id, bootstrap_server_host)
+    def __init__(self, topic: str, group_id: int, bootstrap_server: str, sr_url: str):
+        super().__init__([topic], group_id, bootstrap_server)
         self._sr_client = SchemaRegisteryTopicClient(sr_url=sr_url, topic_name=topic)
         self._msg_schema = self._sr_client.get_schema_from_schema_registry()
         self._avro_deserializer = AvroDeserializer(schema_registry_client=self._sr_client._sr_client,
